@@ -4,6 +4,7 @@
   "description": "SQLAKit templates: problems as you type, completion, hover with the SQL a macro writes, definition, references, rename.",
   "version": "0.1.0",
   "publisher": "sqlakit",
+  "icon": "icon.png",
   "license": "MIT",
   "repository": {
     "type": "git",
