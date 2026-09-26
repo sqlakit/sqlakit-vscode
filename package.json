@@ -4,6 +4,7 @@
   "description": "Language server for SQLAKit SQL templates.",
   "version": "0.1.0",
   "publisher": "sqlakit",
+  "icon": "icon.png",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,0 +1,47 @@
+name: Release
+
+# A tag that names a version publishes it. Nothing else does.
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Publish to the Marketplace and Open VSX
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+      - name: Check the tag against the version
+        run: |
+          tagged="${GITHUB_REF_NAME}"
+          declared="$(bun -e 'console.log(require("./package.json").version)')"
+          if [ "$tagged" != "$declared" ]; then
+            echo "The tag says $tagged and package.json says $declared." >&2
+            exit 1
+          fi
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      # A release runs them again: the tag may not be what CI last saw.
+      - name: Check the types
+        run: bun run check
+      - name: Run tests
+        run: bun test
+      - name: Package
+        run: bun run package
+      - name: Publish to the VS Code Marketplace
+        run: bunx @vscode/vsce publish --no-dependencies --packagePath "sqlakit-${GITHUB_REF_NAME}.vsix"
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      # Cursor, VSCodium and the other builds install from Open VSX.
+      - name: Publish to Open VSX
+        run: bunx ovsx publish "sqlakit-${GITHUB_REF_NAME}.vsix"
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
