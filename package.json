@@ -1,7 +1,7 @@
 {
   "name": "sqlakit",
   "displayName": "SQLAKit",
-  "description": "SQLAKit templates: problems as you type, completion, hover with the SQL a macro writes, definition, references, rename.",
+  "description": "Language server for SQLAKit SQL templates.",
   "version": "0.1.0",
   "publisher": "sqlakit",
   "license": "MIT",
@@ -40,7 +40,7 @@
         "sqlakit.server.path": {
           "type": "string",
           "default": "",
-          "description": "The sqlakit-lsp to run. Empty: the project's .venv, then PATH, then uvx."
+          "description": "Path to sqlakit-lsp. Empty: the project's .venv, then PATH, then uvx."
         },
         "sqlakit.server.args": {
           "type": "array",

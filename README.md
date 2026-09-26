@@ -1,43 +1,43 @@
 # SQLAKit for VS Code
 
-Runs [`sqlakit-lsp`](https://github.com/sqlakit/sqlakit-lsp) for the SQL
-templates and the Python of a [SQLAKit](https://sqlakit.readthedocs.io/en/stable/)
-project:
-
-- the problems `sqlakit check` finds, as you type, with quick fixes
-- completion after `tpl.`, of template names in `db.sql("...")`, and of the
-  parameters a template reads inside that call
-- on hover, the SQL a macro's call writes, and which calls pass a parameter
-- go to definition, find references and rename, for macros and templates
-- the macros' calls and the parameters coloured
-- **Show rendered SQL** in the code actions of a template
+A VS Code extension for [SQLAKit](https://sqlakit.readthedocs.io/en/stable/)
+templates. It runs [`sqlakit-lsp`](https://github.com/sqlakit/sqlakit-lsp),
+which shows errors as you type, completes macro names and template names,
+shows the SQL a macro writes on hover, finds definitions and references, and
+renames macros and templates. It needs `sqlakit` 0.21 or newer.
 
 ## Install
 
-The server is a Python package in your project's environment:
+If [uv](https://docs.astral.sh/uv/) is installed, nothing else is needed: the
+extension runs the server with `uvx`. You can also add the server to the
+project:
 
 ```console
-$ uv add --dev sqlakit-lsp     # or: pip install sqlakit-lsp
+$ uv add --dev sqlakit-lsp
 ```
 
-The extension starts the first of these it finds, for each folder of the
-workspace:
+## Where the server comes from
 
-1. the `sqlakit.server.path` setting;
-2. `.venv/bin/sqlakit-lsp` in the folder;
-3. `sqlakit-lsp` on the `PATH`;
-4. `uvx sqlakit-lsp` when [uv](https://docs.astral.sh/uv/) is installed, with
-   the `sqlakit` version the folder's `uv.lock` holds.
+The extension uses the first one it finds, for each folder of the workspace:
+
+1. the `sqlakit.server.path` setting
+2. `.venv/bin/sqlakit-lsp` in the folder
+3. `sqlakit-lsp` on the `PATH`
+4. `uvx sqlakit-lsp`, with the `sqlakit` version from the folder's `uv.lock`,
+   or the latest server when the folder has no `uv.lock`
+
+The server starts only in folders that list `sqlakit` in `pyproject.toml`,
+`uv.lock` or `requirements.txt`. Set `sqlakit.server.path` to start it
+anywhere else.
 
 **SQLAKit: Restart Language Server** reads the project again. The **SQLAKit**
-output shows the command that started the server and what it read of the
-project.
+output shows how the server was started and what it found in the project.
 
 ## Settings
 
 | setting | holds |
 | --- | --- |
-| `sqlakit.server.path` | the `sqlakit-lsp` to run |
+| `sqlakit.server.path` | path to `sqlakit-lsp` |
 | `sqlakit.server.args` | arguments for it |
 | `sqlakit.trace.server` | `messages` or `verbose` logs what VS Code and the server send each other |
 
