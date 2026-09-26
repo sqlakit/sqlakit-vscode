@@ -1,0 +1,86 @@
+{
+  "name": "sqlakit",
+  "displayName": "SQLAKit",
+  "description": "SQLAKit templates: problems as you type, completion, hover with the SQL a macro writes, definition, references, rename.",
+  "version": "0.1.0",
+  "publisher": "sqlakit",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sqlakit/sqlakit-vscode"
+  },
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "keywords": [
+    "sql",
+    "sqlalchemy",
+    "sqlakit",
+    "templates"
+  ],
+  "activationEvents": [
+    "onLanguage:sql",
+    "onLanguage:python"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sqlakit.restart",
+        "title": "SQLAKit: Restart Language Server"
+      }
+    ],
+    "configuration": {
+      "title": "SQLAKit",
+      "properties": {
+        "sqlakit.server.path": {
+          "type": "string",
+          "default": "",
+          "description": "The sqlakit-lsp to run. Empty: the project's .venv, then PATH, then uvx."
+        },
+        "sqlakit.server.args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Arguments for sqlakit-lsp."
+        },
+        "sqlakit.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Log what VS Code and sqlakit-lsp send each other, in the SQLAKit output."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "esbuild src/extension.ts --bundle --platform=node --format=cjs --external:vscode --outfile=dist/extension.js --minify --sourcemap",
+    "watch": "bun run build -- --watch",
+    "check": "tsc --noEmit",
+    "test": "bun test",
+    "package": "bun run build && vsce package --no-dependencies",
+    "link": "bun run build && bun scripts/link.ts",
+    "unlink": "bun scripts/link.ts unlink"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^10.1.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^24",
+    "@types/vscode": "~1.91.0",
+    "@vscode/vsce": "^3",
+    "esbuild": "^0.28.2",
+    "typescript": "^5"
+  }
+}

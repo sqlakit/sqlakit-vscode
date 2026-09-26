@@ -1,0 +1,18 @@
+{
+  // F5 opens a second VS Code with this extension, built from the source, on
+  // the example project next to this one.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run the extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "${workspaceFolder}/../sqlakit-example"
+      ],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "build"
+    }
+  ]
+}
