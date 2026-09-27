@@ -54,7 +54,7 @@ describe("serverCommand", () => {
     const found = serverCommand(where(), (path) => path === "/usr/bin/uvx", project(LOCK))
     expect(found).toEqual({
       command: "/usr/bin/uvx",
-      args: ["--with", "sqlakit==0.21.0", "--from", "sqlakit-lsp>=0.2,<0.3", "sqlakit-lsp"],
+      args: ["--with", "sqlakit==0.21.0", "--from", "sqlakit-lsp>=0.3,<0.4", "sqlakit-lsp"],
     })
   })
 
@@ -62,7 +62,7 @@ describe("serverCommand", () => {
     const found = serverCommand(where({ args: ["--stdio"] }), (path) => path === "/usr/bin/uvx", project())
     expect(found).toEqual({
       command: "/usr/bin/uvx",
-      args: ["--from", "sqlakit-lsp>=0.2,<0.3", "sqlakit-lsp", "--stdio"],
+      args: ["--from", "sqlakit-lsp>=0.3,<0.4", "sqlakit-lsp", "--stdio"],
     })
   })
 

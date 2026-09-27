@@ -23,7 +23,7 @@ The extension uses the first one it finds, for each folder of the workspace:
 1. the `sqlakit.server.path` setting
 2. `.venv/bin/sqlakit-lsp` in the folder
 3. `sqlakit-lsp` on the `PATH`
-4. `uvx sqlakit-lsp`, a 0.2 release, with the `sqlakit` version from the
+4. `uvx sqlakit-lsp`, a 0.3 release, with the `sqlakit` version from the
    folder's `uv.lock`
 
 The server starts only in folders that list `sqlakit` in `pyproject.toml`,
