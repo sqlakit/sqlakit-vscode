@@ -52,12 +52,18 @@ describe("serverCommand", () => {
 
   test("uvx runs the server with the sqlakit the project locks", () => {
     const found = serverCommand(where(), (path) => path === "/usr/bin/uvx", project(LOCK))
-    expect(found).toEqual({ command: "/usr/bin/uvx", args: ["--with", "sqlakit==0.21.0", "sqlakit-lsp"] })
+    expect(found).toEqual({
+      command: "/usr/bin/uvx",
+      args: ["--with", "sqlakit==0.21.0", "--from", "sqlakit-lsp>=0.2,<0.3", "sqlakit-lsp"],
+    })
   })
 
-  test("without a lock, uvx runs the latest server", () => {
+  test("without a lock, uvx runs a release the extension was made for", () => {
     const found = serverCommand(where({ args: ["--stdio"] }), (path) => path === "/usr/bin/uvx", project())
-    expect(found).toEqual({ command: "/usr/bin/uvx", args: ["sqlakit-lsp@latest", "--stdio"] })
+    expect(found).toEqual({
+      command: "/usr/bin/uvx",
+      args: ["--from", "sqlakit-lsp>=0.2,<0.3", "sqlakit-lsp", "--stdio"],
+    })
   })
 
   test("a lock of an older sqlakit says so", () => {
