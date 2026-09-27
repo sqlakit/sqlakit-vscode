@@ -26,7 +26,7 @@ export const SERVER = "sqlakit-lsp"
  * fix of one minor version, and never the next one, which may change what an
  * editor is sent.
  */
-export const SERVERS = "sqlakit-lsp>=0.2,<0.3"
+export const SERVERS = "sqlakit-lsp>=0.3,<0.4"
 
 /** The oldest `sqlakit` the server reads the templates of. */
 export const OLDEST: [number, number] = [0, 21]
