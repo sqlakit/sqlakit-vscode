@@ -7,8 +7,8 @@
  * 1. the `sqlakit.server.path` setting;
  * 2. `.venv/bin/sqlakit-lsp` in the project;
  * 3. `sqlakit-lsp` on the `PATH`;
- * 4. `uvx sqlakit-lsp`, with the `sqlakit` version the project's `uv.lock`
- *    holds, or `uvx sqlakit-lsp@latest` without one.
+ * 4. `uvx sqlakit-lsp`, a release this extension was made for, `SERVERS`,
+ *    with the `sqlakit` version the project's `uv.lock` holds.
  *
  * VS Code starts the extension in every Python project, so a project that
  * does not depend on `sqlakit` gets no server, unless the setting names one.
@@ -20,6 +20,13 @@ import { existsSync, readFileSync } from "node:fs"
 import { delimiter, join } from "node:path"
 
 export const SERVER = "sqlakit-lsp"
+
+/**
+ * The releases of the server this extension runs through `uvx`: the newest
+ * fix of one minor version, and never the next one, which may change what an
+ * editor is sent.
+ */
+export const SERVERS = "sqlakit-lsp>=0.2,<0.3"
 
 /** The oldest `sqlakit` the server reads the templates of. */
 export const OLDEST: [number, number] = [0, 21]
@@ -83,9 +90,8 @@ export function serverCommand(where: Where, exists = existsSync, read = readText
       quiet: false,
     }
   }
-  // Without a lock, `uvx` would keep the server it installed first.
-  const server = version ? ["--with", `sqlakit==${version}`, SERVER] : [`${SERVER}@latest`]
-  return { command: uvx, args: [...server, ...where.args] }
+  const pinned = version ? ["--with", `sqlakit==${version}`] : []
+  return { command: uvx, args: [...pinned, "--from", SERVERS, SERVER, ...where.args] }
 }
 
 /** Whether a file of dependencies names `sqlakit` itself, not a package whose name holds it. */
