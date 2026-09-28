@@ -2,7 +2,7 @@
   "name": "sqlakit",
   "displayName": "SQLAKit",
   "description": "Language server for SQLAKit SQL templates.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "sqlakit",
   "icon": "icon.png",
   "license": "MIT",
