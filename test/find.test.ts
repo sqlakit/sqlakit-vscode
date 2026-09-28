@@ -7,7 +7,7 @@ const LOCK = `version = 1
 
 [[package]]
 name = "sqlakit"
-version = "0.21.0"
+version = "0.22.4"
 
 [[package]]
 name = "sqlakit-lsp"
@@ -54,7 +54,7 @@ describe("serverCommand", () => {
     const found = serverCommand(where(), (path) => path === "/usr/bin/uvx", project(LOCK))
     expect(found).toEqual({
       command: "/usr/bin/uvx",
-      args: ["--with", "sqlakit==0.21.0", "--from", "sqlakit-lsp>=0.3,<0.4", "sqlakit-lsp"],
+      args: ["--with", "sqlakit==0.22.4", "--from", "sqlakit-lsp>=0.4,<0.5", "sqlakit-lsp"],
     })
   })
 
@@ -62,15 +62,15 @@ describe("serverCommand", () => {
     const found = serverCommand(where({ args: ["--stdio"] }), (path) => path === "/usr/bin/uvx", project())
     expect(found).toEqual({
       command: "/usr/bin/uvx",
-      args: ["--from", "sqlakit-lsp>=0.3,<0.4", "sqlakit-lsp", "--stdio"],
+      args: ["--from", "sqlakit-lsp>=0.4,<0.5", "sqlakit-lsp", "--stdio"],
     })
   })
 
   test("a lock of an older sqlakit says so", () => {
-    const old = LOCK.replace('version = "0.21.0"', 'version = "0.20.0"')
+    const old = LOCK.replace('version = "0.22.4"', 'version = "0.22.3"')
     const found = serverCommand(where(), (path) => path === "/usr/bin/uvx", project(old))
     expect(found).toEqual({
-      problem: "sqlakit-lsp reads the templates of sqlakit 0.21 and newer, and uv.lock holds sqlakit 0.20.0",
+      problem: "sqlakit-lsp reads the templates of sqlakit 0.22.4 and newer, and uv.lock holds sqlakit 0.22.3",
       quiet: false,
     })
   })
@@ -104,18 +104,22 @@ describe("namesSqlakit", () => {
 })
 
 describe("reads", () => {
-  test("the server reads sqlakit from 0.21", () => {
-    expect(reads("0.21.0")).toBe(true)
-    expect(reads("0.22.3")).toBe(true)
+  test("the server reads sqlakit from 0.22.4", () => {
+    expect(reads("0.22.4")).toBe(true)
+    expect(reads("0.22.10")).toBe(true)
+    expect(reads("0.23.0")).toBe(true)
+    expect(reads("0.23")).toBe(true)
     expect(reads("1.0.0")).toBe(true)
-    expect(reads("0.20.0")).toBe(false)
+    expect(reads("0.22.3")).toBe(false)
+    expect(reads("0.21.9")).toBe(false)
+    expect(reads("0.22.4rc1")).toBe(true)
     expect(reads("not a version")).toBe(true)
   })
 })
 
 describe("lockedVersion", () => {
   test("reads the version of the package named", () => {
-    expect(lockedVersion(LOCK, "sqlakit")).toBe("0.21.0")
+    expect(lockedVersion(LOCK, "sqlakit")).toBe("0.22.4")
     expect(lockedVersion(LOCK, "sqlakit-lsp")).toBe("0.1.0")
     expect(lockedVersion(LOCK, "flask")).toBeUndefined()
   })

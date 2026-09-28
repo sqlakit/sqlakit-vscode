@@ -26,10 +26,10 @@ export const SERVER = "sqlakit-lsp"
  * fix of one minor version, and never the next one, which may change what an
  * editor is sent.
  */
-export const SERVERS = "sqlakit-lsp>=0.3,<0.4"
+export const SERVERS = "sqlakit-lsp>=0.4,<0.5"
 
 /** The oldest `sqlakit` the server reads the templates of. */
-export const OLDEST: [number, number] = [0, 21]
+export const OLDEST: [number, number, number] = [0, 22, 4]
 
 /** The files that say a project depends on `sqlakit`. */
 const DEPENDENCIES = ["pyproject.toml", "uv.lock", "requirements.txt", "requirements-dev.txt"]
@@ -101,12 +101,19 @@ export function namesSqlakit(text: string): boolean {
 
 /** Whether the server reads the templates of this `sqlakit` version. */
 export function reads(version: string): boolean {
-  const [major, minor] = version.split(".").map(Number)
-  if (major === undefined || minor === undefined || Number.isNaN(major) || Number.isNaN(minor)) {
+  const [major, minor, patch = "0"] = version.split(".")
+  const parts = [major, minor, patch].map((part) => Number.parseInt(part ?? "", 10))
+  if (parts.some(Number.isNaN)) {
     // A version it cannot read is left to uv, which says what is wrong.
     return true
   }
-  return major > OLDEST[0] || (major === OLDEST[0] && minor >= OLDEST[1])
+  for (const [index, part] of parts.entries()) {
+    const oldest = OLDEST[index] ?? 0
+    if (part !== oldest) {
+      return (part ?? 0) > oldest
+    }
+  }
+  return true
 }
 
 /** Return the first directory of a `PATH` that holds the executable. */

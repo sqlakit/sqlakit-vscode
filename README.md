@@ -4,7 +4,7 @@ A VS Code extension for [SQLAKit](https://sqlakit.readthedocs.io/en/stable/)
 templates. It runs [`sqlakit-lsp`](https://github.com/sqlakit/sqlakit-lsp),
 which shows errors as you type, completes macro names and template names,
 shows the SQL a macro writes on hover, finds definitions and references, and
-renames macros and templates. It needs `sqlakit` 0.21 or newer.
+renames macros and templates. It needs `sqlakit` 0.22.4 or newer.
 
 ## Install
 
@@ -23,7 +23,7 @@ The extension uses the first one it finds, for each folder of the workspace:
 1. the `sqlakit.server.path` setting
 2. `.venv/bin/sqlakit-lsp` in the folder
 3. `sqlakit-lsp` on the `PATH`
-4. `uvx sqlakit-lsp`, a 0.3 release, with the `sqlakit` version from the
+4. `uvx sqlakit-lsp`, a 0.4 release, with the `sqlakit` version from the
    folder's `uv.lock`
 
 The server starts only in folders that list `sqlakit` in `pyproject.toml`,
